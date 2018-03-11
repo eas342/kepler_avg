@@ -73,10 +73,10 @@ endif else begin
    
 endelse
 ;yrep = fft(yrep)
-xsound = findgen(2l^17)
-ysound = sin(xsound * 2E * !PI/float(44100) * 60E) * 1E4
-yrep = ysound
-stop
+;xsound = findgen(2l^17)
+;ysound = sin(xsound * 2E * !PI/float(44100) * 60E * 5E) * 1E4
+;yrep = ysound
+;stop
   if keyword_set(simulate) then begin
      yrep = (randomu(1,1E5) - 0.5E) * 1E4
      outName = 'sounds/simulated_sounds.wav'
