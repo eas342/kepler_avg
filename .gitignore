@@ -1,0 +1,11 @@
+*~
+.DS_Store
+ev_local_pparams.sav
+output/avg_kep/*.fits
+output/avg_kep/*.csv
+*.pyc
+*.sav
+*.eps
+*.pdf
+*.png
+*.wav
