@@ -1,11 +1,31 @@
-pro avg_kepler,showplot=showplot,fchoice=fchoice
+pro avg_kepler,showplot=showplot,fchoice=fchoice,targ=targ
 ;; Makes an average Kepler light curve
 ;; show intermediate step of baseline fitting
 ;; fchoice - choose a particular file for the Average Kepler transit
+;; targ - Specify target, otherwise, it looks at Kepler SC data for
+;;        KIC 12557548b
+
+if n_elements(targ) EQ 0 then targ='KIC1255'
+
+case targ of
+   'KIC1255': begin
+      searchDir = '/../kep_data/*_slc.fits'
+      ;; reference epoch
+      myref = 2454833.039D ;; actually from Saul's light curve minimum
+      myP = 0.6535538D     ;; Van Werkhoven period
+      outName = 'avg_kep'
+   end
+   'K2-22': begin
+      searchDir = '/../k2_22_data/*llc.fits'
+      myref = 2456811.1208D ;; from Sanchis-Ojeda et al. 2015
+      myP = 0.381078        ;; from Sanchis-Ojeda et al. 2015
+      outName = 'k2_22'
+   end
+endcase
 
 ;;Find all short cadence files
 cd,current=currentd
-fl = file_search(currentd+'/../kep_data/*_slc.fits')
+fl = file_search(currentd+searchDir)
 if n_elements(fchoice) NE 0 then begin
    if fchoice LT 0 or fchoice GT n_elements(fl) - 1l then begin
       print,'Invalid file choice'
@@ -18,9 +38,6 @@ endif
 
 nfiles = n_elements(fl)
 
-;; reference epoch
-myref = 2454833.039D ;; actually from Saul's light curve minimum
-myP = 0.6535538D ;; Van Werkhoven period
 
 fitSize = 0.28D
 transL = 0.12
@@ -36,7 +53,8 @@ for i=0l,nfiles-1l do begin
    minT = ceil(min(tperiod))
    maxT = floor(max(tperiod))
    nTrans = maxT - minT + 1l
-   y = d.sap_flux
+   
+   y = d.pdcsap_flux
    for j=0l,nTrans-1l do begin
       cent = double(j) + double(minT)
       localP = where(tperiod GT cent - fitSize  and $
@@ -82,5 +100,6 @@ for i=0l,nfiles-1l do begin
    
 endfor
 
-save,masterx,mastery,filename='output/avg_kep/avg_kep.sav'
+save,masterx,mastery,filename='output/avg_kep/'+outName+'.sav'
+
 end

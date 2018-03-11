@@ -1,7 +1,24 @@
-pro bin_kepler_multi,zoomIn=zoomIn
+pro bin_kepler_multi,zoomIn=zoomIn,targ=targ
 ;; bins together all the phased, baseline-removed Kepler data
 ;; zoomIn - zooms in to show the pre-transit flux increase
-restore,'output/avg_kep/avg_kep.sav'
+;; targ - Specify target, otherwise, it looks at Kepler SC data for
+;;        KIC 12557548b
+;; 
+
+if n_elements(targ) EQ 0 then targ='KIC1255'
+case targ of
+   'KIC1255': begin
+      restore,'output/avg_kep/avg_kep.sav'
+      outName='output/avg_kep/avg_bin_kep.csv'
+   end
+   'K2-22': begin
+      restore,'output/avg_kep/k2_22.sav'
+      outName='output/avg_kep/avg_bin_k2_22.csv'
+   end
+endcase
+
+
+
 binsize = 0
 
 binsize = 0.01E
