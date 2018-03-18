@@ -9,13 +9,18 @@ pro save_bin_lc,targ=targ
         restore,'output/avg_kep/avg_bin_kep.sav'
         outName='output/avg_kep/avg_bin_kep.csv'
      end
+     'KIC1255LC': begin
+        restore,'output/avg_kep/avg_bin_kep_lc.sav'
+        outName='output/avg_kep/avg_bin_kep_lc.csv'
+     end
      'K2-22': begin
         restore,'output/avg_kep/avg_bin_k2_22.sav'
         outName='output/avg_kep/avg_bin_k2_22.csv'
      end
   endcase
 
-  st1 = create_struct('BINMID',BINMID,'BINWIDTHS',BINWIDTHS,'STDEV',STDEVARR,'YBIN',YBIN)
+  st1 = create_struct('BINMID',BINMID,'BINWIDTHS',BINWIDTHS,'STDEV',STDEVARR,'YBIN',YBIN,$
+                      'STDEVSPREAD',stdevSpread)
   dat = struct_arrays(st1)
 
   write_csv,outName,dat,header=tag_names(dat)

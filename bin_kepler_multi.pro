@@ -12,6 +12,11 @@ case targ of
       outName='output/avg_kep/avg_bin_kep.sav'
       binsize = 0.01E
    end
+   'KIC1255LC': begin
+      restore,'output/avg_kep/avg_kep_lc.sav'
+      outName='output/avg_kep/avg_bin_kep_lc.sav'
+      binsize = 0.01E
+   end
    'K2-22': begin
       restore,'output/avg_kep/k2_22.sav'
       outName='output/avg_kep/avg_bin_k2_22.sav'
@@ -32,7 +37,8 @@ binmid = binstarts + binwidths * 0.5E
 offp = where(masterX LT -0.1)
 rsigma = robust_sigma(mastery[offp])
 yerr = rsigma + fltarr(n_elements(masterX))
-ybin = avg_series(masterx,mastery,yerr,binstarts,binwidths,stdevArr=stdevArr,oreject=oreject)
+ybin = avg_series(masterx,mastery,yerr,binstarts,binwidths,$
+                  stdevSpread=stdevSpread,stdevArr=stdevArr,oreject=oreject)
 
 if keyword_set(zoomin) then begin
  custyRange=[0.9995,1.0005]
@@ -41,6 +47,6 @@ plot,binmid,ybin,psym=3,$
      yrange=custyRange,ystyle=1
 oploterror,binmid,ybin,binwidths * 0.5E,stdevArr
 
-save,binmid,ybin,binwidths,stdevArr,filename=outName
+save,binmid,ybin,binwidths,stdevArr,stdevSpread,filename=outName
 
 end

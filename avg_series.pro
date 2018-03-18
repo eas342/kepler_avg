@@ -1,6 +1,6 @@
 function avg_series,dataUT,dataY,SNR,UTlist,explist,weighted=weighted,oreject=oreject,$
                     eArr=eArr,silent=silent,makestop=makestop,stdevArr=stdevArr,$
-                    errIn=errIn
+                    errIn=errIn,stdevSpread=stdevSpread
 ;; takes a series of UT times vs data values
 ;; and bins them into time bins
 ;; dataUT is the time of the data series
@@ -14,9 +14,10 @@ function avg_series,dataUT,dataY,SNR,UTlist,explist,weighted=weighted,oreject=or
 ;; undefined, no outlier rejection occurs
 ;; eArr - an output vector that gives error estimates for the binned value
 ;; silent -- surpressses the output of the files
-;; stdevArr -- an output vector that gives the standard deviation of
-;;             the points within the bin
-
+;; stdevArr -- an output vector that gives the standard erro in the
+;;             mean for the the points within the bin
+;; stdevSpread -- an output vector that gives the standard deviation
+;;             for the points in the bin
 nser = n_elements(dataUT)
 assert,nser,'=',n_elements(dataY),"Input array mismatch"
 assert,nser,'=',n_elements(SNR),"Input array mismatch"
@@ -28,6 +29,7 @@ UTlistend = UTlist + explist    ;end times for exposures
 binArr = dblarr(nUT)
 eArr = dblarr(nUT)
 stdevArr = dblarr(nUT)
+stdevSpread = dblarr(nUT)
 
 if n_elements(silent) EQ 0 then vb = 1 else vb = 0 ;; vb for verbose
 
@@ -77,7 +79,9 @@ for i=0l,nUT - 1l do begin
           eArr[i] = eArr[i] / total(ws[ind[passp]]*double(finite(dataY[ind[passp]])),/nan)
        endif
        ;; error in the mean = stdev / sqrt(N)
+       stdevSpread[i] = robust_sigma(dataY[ind[passp]])
        stdevArr[i] = stddev(dataY[ind[passp]],/nan) / sqrt(float(n_elements(passp)))
+       
     endelse
 
 endfor

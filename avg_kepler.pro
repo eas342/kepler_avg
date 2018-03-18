@@ -15,6 +15,13 @@ case targ of
       myP = 0.6535538D     ;; Van Werkhoven period
       outName = 'avg_kep'
    end
+   'KIC1255LC': begin
+      searchDir = '/../kep_data/*_llc.fits'
+      ;; reference epoch
+      myref = 2454833.039D ;; actually from Saul's light curve minimum
+      myP = 0.6535538D     ;; Van Werkhoven period
+      outName = 'avg_kep_lc'
+   end
    'K2-22': begin
       searchDir = '/../k2_22_data/*llc.fits'
       myref = 2456811.1208D ;; from Sanchis-Ojeda et al. 2015
