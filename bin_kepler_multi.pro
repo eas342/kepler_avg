@@ -29,6 +29,13 @@ case targ of
       binsize = 0.002E
       oreject = 3.0
    end
+   'TrES-2': begin
+      restore,'output/avg_kep/tres_2.sav'
+      outName='output/avg_kep/avg_bin_tres_2.sav'
+      ;; 5 min
+      binsize = 5D / (2.47061317D * 24D * 60D)
+      oreject = 3.0
+   end
 endcase
 
 

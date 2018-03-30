@@ -36,6 +36,13 @@ case targ of
       ;; # http://adsabs.harvard.edu/abs/2016ApJ...823..122W
       outName = 'hat_p_7'
    end
+   'TrES-2': begin
+      searchDir = '/../kepler_sc_data_trES-2b/sc_lightc/*_slc.fits'
+      myref = 2454955.763360D ;; Esteves et al. 2015
+      myP = 2.47061317D ;; Esteves et al. 2015
+      ;; # http://adsabs.harvard.edu/abs/2015ApJ...804..150E
+      outName = 'tres_2'
+   end
 endcase
 
 ;;Find all short cadence files
