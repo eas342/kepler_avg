@@ -20,8 +20,14 @@ case targ of
    'K2-22': begin
       restore,'output/avg_kep/k2_22.sav'
       outName='output/avg_kep/avg_bin_k2_22.sav'
-      binsize = 0.01E
+      binsize = 0.0016E
       oreject= 2.0
+   end
+   'HAT-P-7': begin
+      restore,'output/avg_kep/hat_p_7.sav'
+      outName='output/avg_kep/avg_bin_hat_p_7.sav'
+      binsize = 0.002E
+      oreject = 3.0
    end
 endcase
 

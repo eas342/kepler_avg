@@ -28,6 +28,14 @@ case targ of
       myP = 0.381078        ;; from Sanchis-Ojeda et al. 2015
       outName = 'k2_22'
    end
+   'HAT-P-7': begin
+      searchDir = '/../hatp7_sc/*_slc.fits'
+      ;;myref = 2454731.68039D ;; from Wong et al. 2016
+      myref = 2454954.358470D
+      myP = 2.2047372D ;; from Wong et al. 2016
+      ;; # http://adsabs.harvard.edu/abs/2016ApJ...823..122W
+      outName = 'hat_p_7'
+   end
 endcase
 
 ;;Find all short cadence files

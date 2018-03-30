@@ -17,6 +17,10 @@ pro save_bin_lc,targ=targ
         restore,'output/avg_kep/avg_bin_k2_22.sav'
         outName='output/avg_kep/avg_bin_k2_22.csv'
      end
+     'HAT-P-7': begin
+        restore,'output/avg_kep/avg_bin_hat_p_7.sav'
+        outName='output/avg_kep/avg_bin_hat_p_7.csv'
+     end
   endcase
 
   st1 = create_struct('BINMID',BINMID,'BINWIDTHS',BINWIDTHS,'STDEV',STDEVARR,'YBIN',YBIN,$
