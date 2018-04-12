@@ -40,14 +40,14 @@ endcase
 
 
 
-binbeg = -0.25E
-binEnd = 0.25E
+binbeg = midPhase - 0.25E
+binEnd = midPhase + 0.25E
 nbin = (binEnd - binbeg)/binsize
 binstarts = findgen(nbin) * binsize + binbeg
 binwidths = fltarr(nbin) + binsize
 binmid = binstarts + binwidths * 0.5E
 
-offp = where(masterX LT -0.1)
+offp = where(masterX LT midPhase - 0.1)
 rsigma = robust_sigma(mastery[offp])
 yerr = rsigma + fltarr(n_elements(masterX))
 ybin = avg_series(masterx,mastery,yerr,binstarts,binwidths,$

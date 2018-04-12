@@ -1,9 +1,12 @@
-pro avg_kepler,showplot=showplot,fchoice=fchoice,targ=targ
+pro avg_kepler,showplot=showplot,fchoice=fchoice,targ=targ,$
+               doSecondary=doSecondary
 ;; Makes an average Kepler light curve
 ;; show intermediate step of baseline fitting
 ;; fchoice - choose a particular file for the Average Kepler transit
 ;; targ - Specify target, otherwise, it looks at Kepler SC data for
 ;;        KIC 12557548b
+;; doSecondary - fit secondary eclipse instead of primary
+
 
 if n_elements(targ) EQ 0 then targ='KIC1255'
 
@@ -79,19 +82,31 @@ for i=0l,nfiles-1l do begin
    y = d.pdcsap_flux
    for j=0l,nTrans-1l do begin
       cent = double(j) + double(minT)
+      if keyword_set(doSecondary) then begin
+         midPhase = 0.5
+         cent = cent + midPhase
+      endif else begin
+         midPhase = 0.0
+      endelse
+      
       localP = where(tperiod GT cent - fitSize  and $
                      tperiod LE cent + fitSize)
       outP = where((tperiod GT cent - fitsize and $
                     tperiod LE cent - transL) OR $
                    (tperiod GT cent + transR and $
                     tperiod LE cent + fitsize))
-      if localP EQ [-1] then begin
+      if n_elements(localP) LT 5 then begin
          goodp = [-1]
       endif else begin
          xtemp = tperiod[localP] - cent
          ytemp = y[localP]
          xout = tperiod[outP] - cent
          yout = y[outP]
+
+         if keyword_set(doSecondary) then begin
+            xtemp = xtemp + 0.5
+            xout = xout + 0.5
+         endif
 ;      ypoly = ev_robust_poly(xout,double(yout),npoly)
          goodp = where(abs(yout - median(yout)) LT robust_sigma(yout) * 8E)
       endelse
@@ -122,6 +137,6 @@ for i=0l,nfiles-1l do begin
    
 endfor
 
-save,masterx,mastery,filename='output/avg_kep/'+outName+'.sav'
+save,masterx,mastery,midPhase,filename='output/avg_kep/'+outName+'.sav'
 
 end
