@@ -78,6 +78,7 @@ for i=0l,nfiles-1l do begin
    minT = ceil(min(tperiod))
    maxT = floor(max(tperiod))
    nTrans = maxT - minT + 1l
+   BJD = d.time + kepRef
    
    y = d.pdcsap_flux
    for j=0l,nTrans-1l do begin
@@ -102,6 +103,10 @@ for i=0l,nfiles-1l do begin
          ytemp = y[localP]
          xout = tperiod[outP] - cent
          yout = y[outP]
+         ;; array to keep track of different transits
+         ttemp = tperiod[localP]
+         ;; array to keep track of total time
+         jdtemp = BJD[localP]
 
          if keyword_set(doSecondary) then begin
             xtemp = xtemp + 0.5
@@ -125,9 +130,13 @@ for i=0l,nfiles-1l do begin
          if n_elements(masterX) EQ 0 then begin
             masterx = xtemp
             masterY = yNorm
+            masterT = ttemp ;; absolute phase
+            masterJD = jdtemp ;; absolute time
          endif else begin
             masterx = [masterx,xtemp]
             mastery = [mastery,yNorm]
+            masterT = [masterT,ttemp]
+            masterJD = [masterJD,jdtemp]
          endelse
       endif else begin
 ;         print,"No Valid points found! Returning"
@@ -137,6 +146,7 @@ for i=0l,nfiles-1l do begin
    
 endfor
 
-save,masterx,mastery,midPhase,filename='output/avg_kep/'+outName+'.sav'
+save,masterx,mastery,midPhase,masterT,masterJD,$
+     filename='output/avg_kep/'+outName+'.sav'
 
 end
