@@ -48,6 +48,10 @@ case targ of
    end
 endcase
 
+if keyword_set(doSecondary) then begin
+   outName = outName + '_sec'
+endif
+
 ;;Find all short cadence files
 cd,current=currentd
 fl = file_search(currentd+searchDir)
